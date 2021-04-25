@@ -1,7 +1,0 @@
-package bg.infosys.crc.admin.repository.security.custom;
-
-import bg.infosys.crc.admin.entity.security.User;
-
-public interface UserRepositoryCustom {
-	User findByUsername(String username, Integer userId);
-}
