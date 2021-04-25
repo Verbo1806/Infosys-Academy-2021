@@ -1,0 +1,12 @@
+package bg.infosys.crc.admin.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import bg.infosys.crc.admin.entity.config.QualityCheck;
+import bg.infosys.crc.admin.repository.custom.QualityCheckRepositoryCustom;
+
+@Repository
+public interface QualityCheckRepository extends JpaRepository<QualityCheck, String>, QualityCheckRepositoryCustom {
+
+}

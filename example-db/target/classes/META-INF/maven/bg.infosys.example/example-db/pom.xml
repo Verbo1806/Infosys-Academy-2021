@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<groupId>bg.infosys.example</groupId>
+	<artifactId>example-db</artifactId>
+	<version>1.0</version>
+
+	<repositories>
+		<repository>
+			<id>infosys-m2</id>
+			<name>Infosys Maven2 Repository</name>
+			<url>http://devops.infosys.bg/artifactory/maven2</url>
+		</repository>
+	</repositories>
+	
+	<properties>
+		<!-- Java and Maven plug-ins Versions -->
+		<v.java>11</v.java>
+		<v.compiler.plugin>3.8.1</v.compiler.plugin>
+		<maven.compiler.source>1.8</maven.compiler.source>
+     	<maven.compiler.target>1.8</maven.compiler.target>
+
+		<!-- Infosys Common Version -->
+		<v.infosys.common>2.9</v.infosys.common>
+		
+		<!-- Lombok version -->
+		<v.lombok>1.18.12</v.lombok>
+		
+		<!-- Jackson Datatype -->
+		<v.jackson-datatype>2.11.3</v.jackson-datatype>
+		
+		<!-- Default encoding -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
+	<dependencies>
+		<!-- Infosys Common Dependency -->
+		<dependency>
+			<groupId>bg.infosys.common</groupId>
+			<artifactId>infosys-common</artifactId>
+			<version>${v.infosys.common}</version>
+		</dependency>
+		
+		<!-- Lombok Dependency -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${v.lombok}</version>
+		</dependency>
+		
+		<!-- Jackson Datatype -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.datatype</groupId>
+		    <artifactId>jackson-datatype-jsr310</artifactId>
+		    <version>${v.jackson-datatype}</version>
+		</dependency>
+	</dependencies>
+</project>

@@ -1,0 +1,24 @@
+# Postgres SQL
+reldb.jdbcUrl=jdbc:postgresql://10.0.7.42:5432/crc_roaming
+reldb.user=crc_roaming
+reldb.password=1234567890
+
+reldb.minPoolSize=1
+reldb.maxPoolSize=1
+reldb.initialPoolSize=1
+
+reldb.maxStatements=50
+reldb.maxIdleTime=1800
+
+reldb.showSql=true
+
+# Logger
+logger.rootLogger=DEBUG, CONSOLE
+
+# App Config
+web.token.validity=600
+
+mail.host=infosys.bg
+mail.user=dev@infosys.bg
+mail.pass=GRs82!kvT2vJ
+mail.sender=Roaming App

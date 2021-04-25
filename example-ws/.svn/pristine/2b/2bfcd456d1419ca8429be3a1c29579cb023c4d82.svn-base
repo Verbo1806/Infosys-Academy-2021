@@ -1,0 +1,29 @@
+package bg.infosys.crc.admin.service.mapper;
+
+import org.springframework.stereotype.Service;
+
+import bg.infosys.crc.admin.dto.PermissionDTO;
+import bg.infosys.crc.admin.entity.security.Permission;
+
+@Service
+public class PermissionMapper implements IModelMapper<PermissionDTO, Permission> {
+
+	@Override
+	public PermissionDTO toDto(Permission entity) {
+		return PermissionDTO.builder()
+						  .id(entity.getId())
+						  .name(entity.getName())
+						  .description(entity.getDescription())
+						  .build();
+	}
+
+	@Override
+	public Permission toEntity(PermissionDTO dto) {
+		return Permission.builder()
+						.id(dto.getId())
+						.name(dto.getName())
+						.description(dto.getDescription())
+						.build();
+	}
+
+}

@@ -1,0 +1,40 @@
+package bg.infosys.crc.admin.entity.config;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "measurement_cycles", schema = "config")
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class MeasurementCycle {
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+	
+	@Column(name = "name")
+	private String name;
+	public static final String _name = "name";
+	
+	@Column(name = "loop_count")
+	private Integer loopCount;
+	public static final String _loopCount = "loopCount";
+	
+	@Column(name = "time_between") // in minutes
+	private Integer timeBetween;
+	public static final String _timeBetween = "timeBetween";
+	
+	@Column(name = "enabled")
+	private Boolean enabled;
+	public static final String _enabled = "enabled";
+}

@@ -1,0 +1,29 @@
+package bg.infosys.crc.admin.entity.security;
+
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+import bg.infosys.common.ws.security.db.entities.AbstractAuthority;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Table(name = "authorities", schema = "security")
+@Getter @Setter
+public class Authority extends AbstractAuthority {
+	private static final long serialVersionUID = -7345022558378790390L;
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "authorities_permissions", schema = "security",
+		joinColumns = @JoinColumn(name = "authority_id"),
+		inverseJoinColumns = @JoinColumn(name = "permission_id"))
+	private List<Permission> permissions;
+	public static final String _permissions = "permissions";
+}
+

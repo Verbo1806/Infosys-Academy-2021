@@ -1,0 +1,11 @@
+package bg.infosys.crc.admin.repository.security;
+
+import org.springframework.stereotype.Repository;
+
+import bg.infosys.common.ws.security.db.dao.AbstractPasswordResetRequestDAO;
+import bg.infosys.common.ws.security.db.entities.PasswordResetRequest;
+
+@Repository
+public class RefreshTokenRepository extends AbstractPasswordResetRequestDAO<PasswordResetRequest> {
+
+}

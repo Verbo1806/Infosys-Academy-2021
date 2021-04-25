@@ -1,0 +1,20 @@
+package bg.infosys.crc.admin.repository.custom;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+
+public class GenericRepository<U> {
+	@PersistenceContext
+	private EntityManager entityManager;
+	
+	public final CriteriaBuilder criteriaBuilder() {
+		return entityManager.getCriteriaBuilder();
+	}
+	
+	public final <U> TypedQuery<U> createQuery(CriteriaQuery<U> criteria) {
+		return entityManager.createQuery(criteria);
+	}
+}

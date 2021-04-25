@@ -1,0 +1,26 @@
+package bg.infosys.crc.admin.controller.error;
+
+import lombok.Getter;
+
+@Getter
+public enum APIErrorCodes {
+	NOT_UNIQUE_ORDER_NUM 		("CRC-400-1", "Not unique order num", 					"A parameter with this number is already in use!"),
+	METHOD_ARG_NOT_VALID 		("CRC-400-2", "Method argument not valid", 				"Invalid arguments are passed to the API endpoint!"),
+	HTTP_MESSAGE_NOT_READABLE 	("CRC-400-3", "HTTP message not readable", 				"HTTP message is not readable!"),
+	EXISTING_USER_WITH_AUTH		("CRC-400-4", "Existing active User with Authority", 	"There is at least one active User with this authority!"),
+	USER_WITH_DISBLED_AUTH		("CRC-400-5", "User with disabled Authority", 			"The current User has a disabled Authority!"),
+	EXISTING_USERNAME			("CRC-400-6", "Username already exists", 				"Username already exists!"),
+	LOOP_CYCLES_ALL_DISABLED	("CRC-400-7", "At least one activated configuration", 	"There must be at least one activated configuration!"),
+	
+	UNKNOWN_SERVER_EXCEPTION	("CRC-500-1", "Unknown server exception", "An unknown server error has occurred!");
+	
+	private String code;
+	private String message;
+	private String description;
+	
+	private APIErrorCodes(String code, String message, String description) {
+		this.code = code;
+		this.message = message;
+		this.description = description;
+	}
+}

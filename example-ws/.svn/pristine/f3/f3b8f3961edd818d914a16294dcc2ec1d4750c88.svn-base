@@ -1,0 +1,31 @@
+package bg.infosys.crc.admin.service.mapper;
+
+import org.springframework.stereotype.Service;
+
+import bg.infosys.crc.admin.dto.UserDTO;
+import bg.infosys.crc.admin.entity.security.User;
+
+@Service
+public class UserMapper implements IModelMapper<UserDTO, User> {
+
+	@Override
+	public UserDTO toDto(User entity) {
+		return UserDTO.builder()
+						  .id(entity.getId())
+						  .username(entity.getUsername())
+						  .password(entity.getPassword())
+						  .enabled(entity.getEnabled())
+						  .build();
+	}
+
+	@Override
+	public User toEntity(UserDTO dto) {
+		User user = new User();
+		user.setId(dto.getId());
+		user.setUsername(dto.getUsername());
+		user.setPassword(dto.getPassword());
+		user.setEnabled(dto.getEnabled());
+		return user;
+	}
+
+}

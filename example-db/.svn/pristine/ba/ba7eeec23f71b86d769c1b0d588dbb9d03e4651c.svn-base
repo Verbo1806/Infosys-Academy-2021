@@ -1,0 +1,19 @@
+package bg.infosys.crc.admin.dto.reports.filter;
+
+import java.time.LocalDate;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Report1FilterDTO {
+	private Integer downloadSpeed;
+	private Integer provider;
+	private String region;
+	private Integer network;
+	private LocalDate periodFrom;
+	private LocalDate periodTo;
+}

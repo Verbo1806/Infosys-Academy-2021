@@ -1,0 +1,11 @@
+package bg.infosys.crc.admin.repository.custom;
+
+import java.util.List;
+
+import bg.infosys.crc.admin.dto.PagingSorting;
+import bg.infosys.crc.admin.entity.config.WebAppLabel;
+
+public interface WebAppLabelRepositoryCustom {
+	List<WebAppLabel> findAllByFilter(String code, String languageCode, PagingSorting pagingSorting);
+	long countAllByFilter(String code, String languageCode);
+}

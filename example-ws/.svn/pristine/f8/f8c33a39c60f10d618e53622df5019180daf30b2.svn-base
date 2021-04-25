@@ -1,0 +1,27 @@
+security.config.noAuthPatterns=/swagger-resources/**, /swagger-*/**, /webjars/**, /v2/api-docs, /speeds/**, /users/**, /quality-checks/**, /web-app-labels/**, /auth/o/**
+security.token.refreshValidityDays=7
+security.token.validityMins=${web.token.validity}
+security.token.signKey=cr(#adm1n4pP
+security.token.authoritiesKey=permissions
+security.token.issuer=CRC Admin Protect
+security.config.corsEnable=true
+
+# Postgres SQL
+reldb.jdbcUrl=jdbc:postgresql://10.0.7.42:5432/rmbt
+reldb.user=rmbt
+reldb.password=rmbt
+
+reldb.minPoolSize=1
+reldb.maxPoolSize=1
+reldb.initialPoolSize=1
+
+reldb.maxStatements=50
+reldb.maxIdleTime=1800
+
+reldb.showSql=false
+
+# App Config
+web.token.validity=600
+
+# Jackson Dates Serialization
+spring.jackson.serialization.write-dates-as-timestamps=false

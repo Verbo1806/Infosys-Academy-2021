@@ -1,0 +1,65 @@
+package bg.infosys.crc.admin.controller;
+
+import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import bg.infosys.crc.admin.config.ControllerConfig;
+import bg.infosys.crc.admin.config.Permissions;
+import bg.infosys.crc.admin.controller.docs.IParamVisibilityController;
+import bg.infosys.crc.admin.dto.LitePage;
+import bg.infosys.crc.admin.dto.PagingSorting;
+import bg.infosys.crc.admin.dto.ParamVisibilityDTO;
+import bg.infosys.crc.admin.service.ParamVisibilityService;
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping(ControllerConfig.PARAM_VISIBILITY)
+public class ParamVisibilityController implements IParamVisibilityController {
+	private final ParamVisibilityService paramVisibilityService;
+
+	@GetMapping
+	@Secured(Permissions.MODIFY_INFO)
+	public List<ParamVisibilityDTO> findAll() {
+		return paramVisibilityService.findAll();
+	}
+	
+	@GetMapping("/paging")
+	@Secured(Permissions.MODIFY_INFO)
+	public LitePage<ParamVisibilityDTO> findAllPageable(
+	@RequestParam(defaultValue = "0") int page,
+	       @RequestParam(defaultValue = "5") int size,
+	       @RequestParam(defaultValue = "code", required = false) String sortBy,
+	       @RequestParam(defaultValue = "asc", required = false) String sortDirection,
+	       @RequestParam(required = false) String code,
+	       @RequestParam(required = false) Boolean visible) {
+
+		return paramVisibilityService.findAllByFilter(code, visible, new PagingSorting(page, size, sortBy, sortDirection));
+	}
+	
+	@GetMapping("/{entityId}")
+	@Secured(Permissions.MODIFY_INFO)
+	public ResponseEntity<ParamVisibilityDTO> findOne(@PathVariable String entityId) {
+		Optional<ParamVisibilityDTO> entity = paramVisibilityService.findByCode(entityId);
+	    return entity.map(ResponseEntity::ok).orElseGet(()-> ResponseEntity.notFound().build());
+	}
+	
+	@PutMapping("/{entityId}")
+	@Secured(Permissions.MODIFY_INFO)
+	public ResponseEntity<ParamVisibilityDTO> update(@PathVariable String entityId, @RequestBody @Valid ParamVisibilityDTO entity) {
+		ParamVisibilityDTO updatedEntity = paramVisibilityService.update(entity, entityId);
+		return ResponseEntity.status(200).body(updatedEntity);
+	}
+}

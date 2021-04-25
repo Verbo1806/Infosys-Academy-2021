@@ -1,0 +1,24 @@
+package bg.infosys.crc.admin.controller.docs;
+
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+
+import bg.infosys.crc.admin.dto.FullQualityCheckDTO;
+import bg.infosys.crc.admin.dto.LitePage;
+import bg.infosys.crc.admin.dto.QualityCheckDTO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = "Quality Checks")
+public interface IQualityCheckController {
+
+	@ApiOperation(value = "Find all Quality Checks", notes = "This method will return all Quality Checks")
+	public List<QualityCheckDTO> findAll();
+	
+	@ApiOperation(value = "Return one page of Quality Checks", notes = "This method will return one page of Quality Checks matching the passed filters")
+	public LitePage<QualityCheckDTO> findAllPageable(int page, int size, String sortBy, String sortDirection, String uuid, Boolean isSuccessful);
+	
+	@ApiOperation(value = "Find full Quality Check information", notes = "This method will return Quality Check with given id and it's corresponding measurement or HTTP Status 404 Not Found")
+	public ResponseEntity<FullQualityCheckDTO> findFull(String entityId);
+}

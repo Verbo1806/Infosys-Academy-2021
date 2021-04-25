@@ -1,0 +1,25 @@
+package bg.infosys.crc.admin.controller.docs;
+
+import org.springframework.http.ResponseEntity;
+
+import bg.infosys.crc.admin.dto.LitePage;
+import bg.infosys.crc.admin.dto.UserDTO;
+import bg.infosys.crc.admin.dto.UserPagingDTO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = "Authentication")
+public interface IUserController {
+	
+	@ApiOperation(value = "Return one page of Users", notes = "This method will return one page of Users matching the passed filters")
+	public LitePage<UserPagingDTO> findAllPageable(int page, int size, String sortBy, String sortDirection, String username);
+	
+	@ApiOperation(value = "Find one User", notes = "This method will return User matching the passed id or HTTP Status 404 Not Found")
+	public ResponseEntity<UserDTO> findOne(Integer entityId);
+	
+	@ApiOperation(value = "Create User", notes = "This method will create new User")
+	public ResponseEntity<UserDTO> addUser(UserDTO user);
+	
+	@ApiOperation(value = "Update User", notes = "This method will update the User with given id or HTTP Status 404 Not Found")
+	public ResponseEntity<UserDTO> update(Integer entityId, UserDTO entity);
+}

@@ -1,0 +1,44 @@
+package bg.infosys.crc.admin.dto;
+
+import java.time.LocalDateTime;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import bg.infosys.common.utils.DateTimeUtil;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonInclude(Include.NON_NULL)
+@ApiModel(description = "Class representing a web app label in the application")
+public class WebAppLabelDTO {
+	@ApiModelProperty(notes = "Unique string identifier of the Web App Label", example = "WAL 1", required = true, position = 0)
+	@Setter private String code;
+	
+	@ApiModelProperty(notes = "Language code of the Web App Label", example = "BG", required = true, position = 1)
+	@NotBlank(message = "'languageCode' cannot be blank")
+	@Size(max = 3, message = "'languageCode' length must be less than 4 characters")
+	private String languageCode;
+	
+	@ApiModelProperty(notes = "Content of the Web App Label", example = "This is example content!", required = true, position = 2)
+	@NotBlank(message = "'text' cannot be blank")
+	@Size(max = 8192, message = "text' length must be less than 8193 characters")
+	private String text;
+	
+	@ApiModelProperty(notes = "Timestamp of the last edit", example = "06.10.2017 19:10:25", required = false, position = 3)
+	@JsonFormat(pattern=DateTimeUtil.DATETIME_FORMAT)
+	@Setter private LocalDateTime editedAt;
+}

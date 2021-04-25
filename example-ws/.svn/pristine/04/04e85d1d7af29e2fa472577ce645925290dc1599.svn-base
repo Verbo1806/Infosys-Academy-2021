@@ -1,0 +1,28 @@
+package bg.infosys.crc.admin.controller;
+
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import bg.infosys.crc.admin.config.ControllerConfig;
+import bg.infosys.crc.admin.controller.docs.ILocationController;
+import bg.infosys.crc.admin.dto.RegionDTO;
+import bg.infosys.crc.admin.service.LocationService;
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping(ControllerConfig.LOCATIONS_URL)
+public class LocationController implements ILocationController {
+	private final LocationService locationService;
+
+	@GetMapping("regions")
+	@ResponseStatus(HttpStatus.OK)
+	public List<RegionDTO> findAllRegions() {
+		return locationService.findAllRegions();
+	}
+}

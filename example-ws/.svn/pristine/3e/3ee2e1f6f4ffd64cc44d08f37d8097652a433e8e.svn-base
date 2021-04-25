@@ -1,0 +1,33 @@
+package bg.infosys.crc.admin.service.mapper;
+
+import org.springframework.stereotype.Service;
+
+import bg.infosys.crc.admin.dto.MeasurementParameterDTO;
+import bg.infosys.crc.admin.entity.MeasurementParameter;
+
+@Service
+public class MeasurementParameterMapper implements IModelMapper<MeasurementParameterDTO, MeasurementParameter> {
+
+	@Override
+	public MeasurementParameterDTO toDto(MeasurementParameter entity) {
+		return MeasurementParameterDTO.builder()
+						  .code(entity.getCode())
+						  .value(entity.getValue())
+						  .valueType(entity.getValueType())
+						  .measurementType(entity.getMeasurementType())
+						  .description(entity.getDescription())
+						  .build();
+	}
+
+	@Override
+	public MeasurementParameter toEntity(MeasurementParameterDTO dto) {
+		return MeasurementParameter.builder()
+						.code(dto.getCode())
+						.value(dto.getValue())
+						.valueType(dto.getValueType())
+						.measurementType(dto.getMeasurementType())
+						.description(dto.getDescription())
+						.build();
+	}
+
+}

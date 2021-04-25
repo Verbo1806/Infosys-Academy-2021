@@ -1,0 +1,41 @@
+package bg.infosys.crc.admin.entity;
+
+import java.util.UUID;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
+
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+
+import bg.infosys.crc.admin.dto.reports.SpeedItemsDTO;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "speed")
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@TypeDefs({
+    @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
+})
+public class Speed2 {
+	@Id
+	@Column(name = "open_test_uuid")
+	private UUID openTestUuid;
+	public static final String _openTestUuid = "openTestUuid";
+	
+	@Column(columnDefinition = "jsonb")
+	@Type(type = "jsonb")
+	private SpeedItemsDTO items;
+	public static final String _items = "items";
+}

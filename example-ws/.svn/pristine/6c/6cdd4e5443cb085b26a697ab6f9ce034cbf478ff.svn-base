@@ -1,0 +1,73 @@
+package bg.infosys.crc.admin.controller;
+
+import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import bg.infosys.crc.admin.config.ControllerConfig;
+import bg.infosys.crc.admin.config.Permissions;
+import bg.infosys.crc.admin.controller.docs.IWebAppLabelController;
+import bg.infosys.crc.admin.dto.LitePage;
+import bg.infosys.crc.admin.dto.PagingSorting;
+import bg.infosys.crc.admin.dto.WebAppLabelDTO;
+import bg.infosys.crc.admin.service.WebAppLabelService;
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping(ControllerConfig.WEB_APP_LABEL_URL)
+public class WebAppLabelController implements IWebAppLabelController {
+	private final WebAppLabelService webAppLabelService;
+
+	@GetMapping
+	@Secured(Permissions.MODIFY_INFO)
+	public List<WebAppLabelDTO> findAll() {
+		return webAppLabelService.findAll();
+	}
+	
+	@GetMapping("/paging")
+	@Secured(Permissions.MODIFY_INFO)
+	public LitePage<WebAppLabelDTO> findAllPageable(
+	@RequestParam(defaultValue = "0") int page,
+	       @RequestParam(defaultValue = "5") int size,
+	       @RequestParam(defaultValue = "code", required = false) String sortBy,
+	       @RequestParam(defaultValue = "asc", required = false) String sortDirection,
+	       @RequestParam(required = false) String code,
+	       @RequestParam(required = false) String language) {
+
+		return webAppLabelService.findAllByFilter(code, language, new PagingSorting(page, size, sortBy, sortDirection));
+	}
+	
+	@GetMapping("/{entityId}")
+	@Secured(Permissions.MODIFY_INFO)
+	public ResponseEntity<WebAppLabelDTO> findOne(@PathVariable String entityId) {
+		Optional<WebAppLabelDTO> entity = webAppLabelService.findByCode(entityId);
+	    return entity.map(ResponseEntity::ok).orElseGet(()-> ResponseEntity.notFound().build());
+	}
+	
+	@PostMapping
+	@Secured(Permissions.MODIFY_INFO)
+	public ResponseEntity<WebAppLabelDTO> create(@RequestBody @Valid WebAppLabelDTO entity) {
+		WebAppLabelDTO createdEntity = webAppLabelService.save(entity);
+		return ResponseEntity.status(201).body(createdEntity);
+	}
+	
+	@PutMapping("/{entityId}")
+	@Secured(Permissions.MODIFY_INFO)
+	public ResponseEntity<WebAppLabelDTO> update(@PathVariable String entityId, @RequestBody @Valid WebAppLabelDTO entity) {
+		WebAppLabelDTO updatedEntity = webAppLabelService.update(entity, entityId);
+		return ResponseEntity.status(200).body(updatedEntity);
+	}
+}

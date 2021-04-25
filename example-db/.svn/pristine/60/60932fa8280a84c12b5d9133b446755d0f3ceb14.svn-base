@@ -1,0 +1,15 @@
+package bg.infosys.crc.admin.repository.security.custom;
+
+import java.util.List;
+
+import bg.infosys.crc.admin.dto.PagingSorting;
+import bg.infosys.crc.admin.entity.security.User;
+
+public interface UserRepositoryCustom {
+	User findByUsername(String username, Integer userId);
+	List<User> findAllByFilter(String username, PagingSorting pagingSorting);
+	long countAllByFilter(String username);
+	
+	boolean isAuthUsed(Integer authId);
+	boolean hasDisabledAuth(Integer userId);
+}

@@ -1,0 +1,65 @@
+package bg.infosys.crc.admin.service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
+import bg.infosys.crc.admin.controller.error.APIErrorCodes;
+import bg.infosys.crc.admin.controller.exception.BadRequestException;
+import bg.infosys.crc.admin.dto.LitePage;
+import bg.infosys.crc.admin.dto.PagingSorting;
+import bg.infosys.crc.admin.dto.ParamVisibilityDTO;
+import bg.infosys.crc.admin.entity.config.ParamVisibility;
+import bg.infosys.crc.admin.repository.ParamVisibilityRepository;
+import bg.infosys.crc.admin.service.mapper.ParamVisibilityMapper;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class ParamVisibilityService {
+	private final ParamVisibilityRepository paramVisibilityRepository;
+	private final ParamVisibilityMapper paramVisibilityMapper;
+	
+	public List<ParamVisibilityDTO> findAll() {
+		return paramVisibilityRepository.findAll().stream()
+											  .map(s -> paramVisibilityMapper.toDto(s))
+											  .collect(Collectors.toList());
+	}
+	
+	public Optional<ParamVisibilityDTO> findByCode(String entityId) {
+		return paramVisibilityRepository.findById(entityId).map(p -> paramVisibilityMapper.toDto(p));
+	}
+	
+	@Transactional
+	public ParamVisibilityDTO update(ParamVisibilityDTO entity, String entityId) {
+		if (paramVisibilityRepository.isOrderNumUnique(entityId, entity.getOrderNum())) {
+			throw new BadRequestException(APIErrorCodes.NOT_UNIQUE_ORDER_NUM);
+		}
+		ParamVisibility updatedEntity = paramVisibilityRepository
+								.findById(entityId)
+								.orElseThrow(() -> new EntityNotFoundException("Param Visibility does not exist!"));
+
+		entity.setCode(entityId);
+		updatedEntity = paramVisibilityRepository.save(paramVisibilityMapper.toEntity(entity));
+		return paramVisibilityMapper.toDto(updatedEntity);
+	}
+	
+	@Transactional
+	public LitePage<ParamVisibilityDTO> findAllByFilter(String code, Boolean visible, PagingSorting pagingSorting) {
+		List<ParamVisibility> results = paramVisibilityRepository.findAllByFilter(code, visible, pagingSorting);
+		
+		return LitePage.<ParamVisibilityDTO>builder()
+					   .content(results.stream()
+									     .map(p -> paramVisibilityMapper.toDto(p))
+									     .collect(Collectors.toList()))
+					   .pageNumber(pagingSorting.getPageNumber())
+					   .pageSize(pagingSorting.getPageSize())
+					   .totalElements(paramVisibilityRepository.countAllByFilter(code, visible))
+					   .build();
+	}
+}

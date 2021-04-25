@@ -1,0 +1,23 @@
+package bg.infosys.crc.admin.controller.docs;
+
+import bg.infosys.common.ws.security.AuthRefreshTokenDTO;
+import bg.infosys.common.ws.security.AuthRequestDTO;
+import bg.infosys.common.ws.security.ChangePasswordDTO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = "Authentication")
+public interface IAuthController {
+	
+	@ApiOperation(value = "User login", notes = "This method will login the User into the system")
+	public AuthRefreshTokenDTO login(AuthRequestDTO authRequest);
+	
+	@ApiOperation(value = "User refresh token", notes = "This method will refresh the token of the User")
+	public AuthRefreshTokenDTO refresh(AuthRefreshTokenDTO refreshRequest);
+	
+	@ApiOperation(value = "User logout", notes = "This method will logout the current User from the system")
+	public void logout();
+	
+	@ApiOperation(value = "Change User password", notes = "This method will change the password of User")
+	public void changePassword(ChangePasswordDTO data);
+}

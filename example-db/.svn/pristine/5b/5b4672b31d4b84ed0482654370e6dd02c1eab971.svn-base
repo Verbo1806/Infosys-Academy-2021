@@ -1,0 +1,35 @@
+package bg.infosys.crc.admin.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "n_regions")
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Region {
+	@Id @Column(name = _code)
+	private String code;
+	public static final String _code = "code";
+
+	@Column(name = _name)
+	private String name;
+	public static final String _name = "name";
+
+	@Column(name = "name_lat")
+	private String nameLat;
+	public static final String _nameLat = "nameLat";
+
+	@Column(name = "order_num")
+	private Short orderNum;
+	public static final String _orderNum = "orderNum";
+}

@@ -1,0 +1,12 @@
+package bg.infosys.crc.admin.repository.custom;
+
+import java.util.List;
+
+import bg.infosys.crc.admin.dto.PagingSorting;
+import bg.infosys.crc.admin.entity.config.ParamVisibility;
+
+public interface ParamVisibilityRepositoryCustom {
+	List<ParamVisibility> findAllByFilter(String code, Boolean visible, PagingSorting pagingSorting);
+	long countAllByFilter(String code, Boolean visible);
+	boolean isOrderNumUnique(String code, Integer orderNum);
+}

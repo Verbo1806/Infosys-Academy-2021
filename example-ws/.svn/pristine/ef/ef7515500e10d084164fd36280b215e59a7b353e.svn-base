@@ -1,0 +1,31 @@
+package bg.infosys.crc.admin.service.mapper;
+
+import org.springframework.stereotype.Service;
+
+import bg.infosys.crc.admin.dto.WebAppLabelDTO;
+import bg.infosys.crc.admin.entity.config.WebAppLabel;
+
+@Service
+public class WebAppLabelMapper implements IModelMapper<WebAppLabelDTO, WebAppLabel> {
+
+	@Override
+	public WebAppLabelDTO toDto(WebAppLabel entity) {
+		return WebAppLabelDTO.builder()
+							  .code(entity.getCode())
+							  .languageCode(entity.getLanguageCode())
+							  .text(entity.getText())
+							  .editedAt(entity.getEditedAt())
+							  .build();
+	}
+
+	@Override
+	public WebAppLabel toEntity(WebAppLabelDTO dto) {
+		return WebAppLabel.builder()
+						.code(dto.getCode())
+						.languageCode(dto.getLanguageCode())
+						.text(dto.getText())
+						.editedAt(dto.getEditedAt())
+						.build();
+	}
+
+}

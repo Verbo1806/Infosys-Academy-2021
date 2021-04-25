@@ -1,0 +1,46 @@
+package bg.infosys.crc.admin.dto;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonInclude(Include.NON_NULL)
+@ApiModel(description = "Class representing a user in the application")
+public class UserDTO {
+	@ApiModelProperty(notes = "Unique identifier of the User.", example = "1", required = true, position = 0)
+	@Setter private Integer id;
+	
+	@ApiModelProperty(notes = "Username of the User.", example = "a.verbovskiy@example.com", required = true, position = 1)
+	@NotBlank(message = "'username' cannot be blank")
+	@Size(max = 64, message = "'username' length must be less than 65 characters")
+	private String username;
+	
+	@ApiModelProperty(notes = "Password of the User.", example = "$2a$10$T3z8sVcNLIBjspqExKzLIejR7hVSCAzvreJ.Uak4FdJGQ232ZScxe", required = true, position = 2)
+	@NotBlank(message = "'password' cannot be blank")
+	private String password;
+	
+	@ApiModelProperty(notes = "Full name of the User.", example = "Alexander Verbovskiy", required = true, position = 3)
+	@NotBlank(message = "'fullName' cannot be blank")
+	@Size(max = 64, message = "'fullName' length must be less than 65 characters")
+	private String fullName;
+	
+	@ApiModelProperty(notes = "State of the User.", example = "true", required = true, position = 4)
+	private Boolean enabled;
+	
+	@ApiModelProperty(notes = "User's authority.", required = true, position = 5)
+	private AuthorityDTO authority;
+}

@@ -1,0 +1,13 @@
+package bg.infosys.crc.admin.repository;
+
+import java.util.UUID;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import bg.infosys.crc.admin.entity.Speed2;
+
+@Repository
+public interface Speed2Repository extends JpaRepository<Speed2, UUID> {
+	
+}

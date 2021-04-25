@@ -1,0 +1,32 @@
+package bg.infosys.crc.admin.dto;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonInclude(Include.NON_NULL)
+@ApiModel(description = "Class representing a network type in the application")
+public class NetworkTypeDTO {
+	@ApiModelProperty(notes = "Unique identifier of the Network Type.", example = "1", required = true, position = 0)
+	@Setter private Integer uid;
+	
+	@ApiModelProperty(notes = "Name of the Network Type.", example = "LAN", required = true, position = 1)
+	@NotBlank(message = "'name' cannot be blank")
+	@Size(max = 200, message = "'name' length must be less than 201 characters")
+	private String name;
+}
+

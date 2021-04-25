@@ -1,0 +1,57 @@
+package bg.infosys.crc.admin.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "provider")
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Provider {
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer uid;
+	public static final String _uid = "uid";
+	
+	@Column(name = "name")
+	private String name;
+	public static final String _name = "name";
+	
+	@Column(name = "shortname")
+	private String shortname;
+	public static final String _shortname = "shortname";
+	
+	@Column(name = "mcc_mnc")
+	private String mccMnc;
+	public static final String _mccMnc = "mccMnc";
+	
+	@Column(name = "map_filter")
+	private Boolean mapFilter;
+	public static final String _mapFilter = "mapFilter";
+	
+	@Column(name = "ident_num")
+	private String identNum;
+	public static final String _identNum = "identNum";
+	
+	@Column(name = "ip_range")
+	private String ipRange;
+	public static final String _ipRange = "ipRange";
+	
+	@Column(name = "net_owner")
+	private String netOwner;
+	public static final String _netOwner = "netOwner";
+	
+	@Column(name = "active")
+	private Boolean active;
+	public static final String _active = "active";
+}

@@ -1,0 +1,28 @@
+package bg.infosys.crc.admin.entity.security;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "permissions", schema = "security")
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Permission {
+	@Id
+	private Integer id;
+
+	@Column(name = "name")
+	private String name;
+
+	@Column(name = "description")
+	private String description;
+}

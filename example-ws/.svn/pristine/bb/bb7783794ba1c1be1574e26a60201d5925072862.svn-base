@@ -1,0 +1,38 @@
+package bg.infosys.crc.admin.dto;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonInclude(Include.NON_NULL)
+@ApiModel(description = "Class representing a user data for paging")
+public class UserPagingDTO {
+	@ApiModelProperty(notes = "Unique identifier of the User.", example = "1", position = 0)
+	@Setter private Integer id;
+	
+	@ApiModelProperty(notes = "Username of the User.", example = "a.verbovskiy@example.com", position = 1)
+	private String username;
+	
+	@ApiModelProperty(notes = "Password of the User.", example = "$2a$10$T3z8sVcNLIBjspqExKzLIejR7hVSCAzvreJ.Uak4FdJGQ232ZScxe", position = 2)
+	private String password;
+	
+	@ApiModelProperty(notes = "Full name of the User.", example = "Alexander Verbovskiy", position = 3)
+	private String fullName;
+	
+	@ApiModelProperty(notes = "State of the User.", example = "true", position = 4)
+	private Boolean enabled;
+	
+	@ApiModelProperty(notes = "User's authority name.", example = "ADMIN", position = 5)
+	private String authority;
+}

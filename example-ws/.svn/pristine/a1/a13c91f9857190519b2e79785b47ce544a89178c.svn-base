@@ -1,0 +1,49 @@
+package bg.infosys.crc.admin.dto;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonInclude(Include.NON_NULL)
+@ApiModel(description = "Class representing a provider in the application.")
+public class ProviderDTO {
+	@ApiModelProperty(notes = "Unique identifier of the Provider", example = "1", required = true, position = 0)
+	@Setter private Integer id;
+
+	@ApiModelProperty(notes = "Name of the provider", example = "Bulgarian Telecommunications Company EAD", required = true, position = 1)
+	@NotBlank(message = "'name' cannot be blank")
+	@Size(max = 255, message = "'name' length must be less than 255 characters")
+	private String name;
+	
+	@ApiModelProperty(notes = "Identification Number of the provider", example = "123456789", required = true, position = 2)
+	@NotBlank(message = "'identNum' cannot be blank")
+	@Size(max = 255, message = "identNum' length must be less than 255 characters")
+	private String identNum;
+	
+	@ApiModelProperty(notes = "IP Range of the provider", example = "224.0.0.0.255.255.255", required = true, position = 3)
+	@NotBlank(message = "'ipRange' cannot be blank")
+	@Size(max = 255, message = "ipRange' length must be less than 255 characters")
+	private String ipRange;
+	
+	@ApiModelProperty(notes = "NET Owner of the provider", example = "xxxx", required = true, position = 4)
+	@NotBlank(message = "'netOwner' cannot be blank")
+	@Size(max = 255, message = "netOwner' length must be less than 255 characters")
+	private String netOwner;
+	
+	@ApiModelProperty(notes = "State of the provider", example = "true", required = false, position = 5)
+	private Boolean active;
+}

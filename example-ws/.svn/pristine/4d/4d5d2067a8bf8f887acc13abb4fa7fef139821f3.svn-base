@@ -1,0 +1,82 @@
+package bg.infosys.crc.admin.controller;
+
+import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import bg.infosys.crc.admin.config.ControllerConfig;
+import bg.infosys.crc.admin.config.Permissions;
+import bg.infosys.crc.admin.controller.docs.ISpeedController;
+import bg.infosys.crc.admin.dto.LitePage;
+import bg.infosys.crc.admin.dto.PagingSorting;
+import bg.infosys.crc.admin.dto.SpeedDTO;
+import bg.infosys.crc.admin.service.SpeedService;
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping(ControllerConfig.SPEEDS_URL)
+public class SpeedController implements ISpeedController {
+	private final SpeedService speedService;
+
+	@GetMapping
+	@ResponseStatus(HttpStatus.OK)
+	@Secured(Permissions.MODIFY_INFO)
+	public List<SpeedDTO> findAll() {
+		return speedService.findAllActive();
+	}
+	
+	@GetMapping("/paging")
+	@ResponseStatus(HttpStatus.OK)
+	@Secured(Permissions.MODIFY_INFO)
+	public LitePage<SpeedDTO> findAllPageable(
+	@RequestParam(defaultValue = "0") int page,
+	       @RequestParam(defaultValue = "5") int size,
+	       @RequestParam(defaultValue = "name", required = false) String sortBy,
+	       @RequestParam(defaultValue = "asc", required = false) String sortDirection,
+	       @RequestParam(required = false) String name,
+	       @RequestParam(required = false) Integer rangeFrom,
+	       @RequestParam(required = false) Integer rangeTo,
+	       @RequestParam(required = false) Boolean active) {
+
+		return speedService.findAllByFilter(name, rangeFrom, rangeTo, active, new PagingSorting(page, size, sortBy, sortDirection));
+	}
+	
+	@GetMapping("/{entityId}")
+	@ResponseStatus(HttpStatus.OK)
+	@Secured(Permissions.MODIFY_INFO)
+	public ResponseEntity<SpeedDTO> findOne(@PathVariable Integer entityId) {
+		Optional<SpeedDTO> entity = speedService.findById(entityId);
+	    return entity.map(ResponseEntity::ok).orElseGet(()-> ResponseEntity.notFound().build());
+	}
+	
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	@Secured(Permissions.MODIFY_INFO)
+	public ResponseEntity<SpeedDTO> create(@RequestBody @Valid SpeedDTO entity) {
+		SpeedDTO createdEntity = speedService.save(entity);
+		return ResponseEntity.status(201).body(createdEntity);
+	}
+	
+	@PutMapping("/{entityId}")
+	@ResponseStatus(HttpStatus.OK)
+	@Secured(Permissions.MODIFY_INFO)
+	public ResponseEntity<SpeedDTO> update(@PathVariable Integer entityId, @RequestBody @Valid SpeedDTO entity) {
+		SpeedDTO updatedEntity = speedService.update(entity, entityId);
+		return ResponseEntity.status(200).body(updatedEntity);
+	}
+}

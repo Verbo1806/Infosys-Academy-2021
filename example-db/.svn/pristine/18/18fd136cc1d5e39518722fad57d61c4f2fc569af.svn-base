@@ -1,0 +1,11 @@
+package bg.infosys.crc.admin.repository.custom;
+
+import java.util.List;
+
+import bg.infosys.crc.admin.dto.PagingSorting;
+import bg.infosys.crc.admin.entity.config.QualityCheck;
+
+public interface QualityCheckRepositoryCustom {
+	List<QualityCheck> findAllByFilter(String uuid, Boolean isSuccessful, PagingSorting pagingSorting);
+	long countAllByFilter(String uuid, Boolean isSuccessful);
+}

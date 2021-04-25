@@ -1,0 +1,56 @@
+package bg.infosys.crc.admin.entity.security;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.AssociationOverride;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.Table;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import bg.infosys.common.ws.security.annotations.TokenClaim;
+import bg.infosys.common.ws.security.db.entities.AbstractUser;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Table(name = "users", schema = "security")
+@AssociationOverride(name = "grantedAuthorities", joinTable =
+@JoinTable(name="users_authorities", schema="security",
+	joinColumns = @JoinColumn(name = "user_id"),
+	inverseJoinColumns = @JoinColumn(name = "authority_id")))
+public class User extends AbstractUser<User, Authority> {
+	private static final long serialVersionUID = 1L;
+	
+	@Column(name = "full_name")
+	@Getter @Setter private String fullName;
+	
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		List<SimpleGrantedAuthority> gaList = new ArrayList<>();
+		Authority a = getGrantedAuthorities().get(0);
+		for (Permission p : a.getPermissions()) {
+			gaList.add(new SimpleGrantedAuthority(p.getName()));
+		}
+		
+		return gaList;
+	}
+	
+	@TokenClaim
+	public Map<String, String> toTokenClaims() {
+		Map<String, String> claims = new HashMap<>();
+		claims.put("lau_fullName", getFullName());
+		claims.put("lau_role", getGrantedAuthorities().get(0).getName());
+		
+		return claims;
+	}
+
+}

@@ -1,0 +1,22 @@
+package bg.infosys.crc.admin.config;
+
+public interface Permissions {
+	String MODIFY_USER 			= "MODIFY_USER";
+	String MODIFY_PARAM_VIS 	= "MODIFY_PARAM_VIS";
+	String MODIFY_INFO 			= "MODIFY_INFO";
+	
+	String CONFIG_LOOP 			= "CONFIG_LOOP";
+	String CONFIG_MEAS_PARAM 	= "CONFIG_MEAS_PARAM";
+	String CONFIG_TRAFFIC 		= "CONFIG_TRAFFIC";
+	String CONFIG_SESSION 		= "CONFIG_SESSION";
+	
+	String VIEW_REQ_HIST 		= "VIEW_REQ_HIST";
+	String VIEW_MEAS_HIST 		= "VIEW_MEAS_HIST";
+	String VIEW_MAP 			= "VIEW_MAP";
+	String VIEW_LOG 			= "VIEW_LOG";
+	String VIEW_STATS			= "VIEW_STATS";
+	
+	String SEND_OPEN_DATA 		= "SEND_OPEN_DATA";
+	String SEND_REGIX 			= "SEND_REGIX";
+	String SEND_BEREC			= "SEND_BEREC";
+}

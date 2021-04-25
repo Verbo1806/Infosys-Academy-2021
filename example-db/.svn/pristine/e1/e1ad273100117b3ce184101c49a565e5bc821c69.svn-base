@@ -1,0 +1,11 @@
+package bg.infosys.crc.admin.repository.custom;
+
+import java.util.List;
+
+import bg.infosys.crc.admin.dto.PagingSorting;
+import bg.infosys.crc.admin.entity.config.MeasurementParameter;
+
+public interface MeasurementParameterRepositoryCustom {
+	List<MeasurementParameter> findAllByFilter(String code, String type, PagingSorting pagingSorting);
+	long countAllByFilter(String code, String type);
+}

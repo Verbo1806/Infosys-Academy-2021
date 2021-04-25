@@ -1,0 +1,30 @@
+package bg.infosys.crc.admin.controller.docs;
+
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import bg.infosys.crc.admin.dto.LitePage;
+import bg.infosys.crc.admin.dto.ParamVisibilityDTO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = "Params Visibility")
+public interface IParamVisibilityController {
+
+	@ApiOperation(value = "Find all Params", notes = "This method will return all Params")
+	public List<ParamVisibilityDTO> findAll();
+	
+	@ApiOperation(value = "Return one page of Params", notes = "This method will return one page of Params matching the passed filters")
+	public LitePage<ParamVisibilityDTO> findAllPageable(int page, int size, String sortBy, String sortDirection, String code, Boolean visible);
+	
+	@ApiOperation(value = "Find one Param", notes = "This method will return Param matching the passed id or HTTP Status 404 Not Found")
+	public ResponseEntity<ParamVisibilityDTO> findOne(@PathVariable String entityId);
+	
+	@ApiOperation(value = "Update Param", notes = "This method will update the Param with given id or HTTP Status 404 Not Found")
+	public ResponseEntity<ParamVisibilityDTO> update(@PathVariable String entityId, @RequestBody @Valid ParamVisibilityDTO entity);
+}

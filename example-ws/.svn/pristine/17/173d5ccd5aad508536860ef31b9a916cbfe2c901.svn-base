@@ -1,0 +1,26 @@
+package bg.infosys.crc.admin.service.mapper;
+
+import org.springframework.stereotype.Service;
+
+import bg.infosys.crc.admin.dto.MeasurementDTO;
+import bg.infosys.crc.admin.entity.Measurement;
+
+@Service
+public class MeasurementMapper implements IModelMapper<MeasurementDTO, Measurement> {
+
+	@Override
+	public MeasurementDTO toDto(Measurement entity) {
+		return MeasurementDTO.builder()
+							  .ping(entity.getPing())
+							  .downloadSpeed(entity.getDownloadSpeed())
+							  .uploadSpeed(entity.getUploadSpeed())
+							  .provider(entity.getProvider())
+							  .build();
+	}
+
+	@Override
+	public Measurement toEntity(MeasurementDTO dto) {
+		throw new UnsupportedOperationException();
+	}
+
+}

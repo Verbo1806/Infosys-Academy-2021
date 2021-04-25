@@ -1,0 +1,65 @@
+package bg.infosys.crc.admin.service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
+import bg.infosys.crc.admin.dto.LitePage;
+import bg.infosys.crc.admin.dto.PagingSorting;
+import bg.infosys.crc.admin.dto.ProviderDTO;
+import bg.infosys.crc.admin.entity.Provider;
+import bg.infosys.crc.admin.repository.ProviderRepository;
+import bg.infosys.crc.admin.service.mapper.ProviderMapper;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class ProviderService {
+	private final ProviderRepository providersRepository;
+	private final ProviderMapper providerMapper;
+	
+	public List<ProviderDTO> findAll() {
+		return providersRepository.findAll().stream()
+											.map(p -> providerMapper.toDto(p))
+											.collect(Collectors.toList());
+	}
+	
+	public Optional<ProviderDTO> findById(Integer entityId) {
+		return providersRepository.findById(entityId).map(p -> providerMapper.toDto(p));
+	}
+	
+	@Transactional
+	public ProviderDTO update(ProviderDTO entity, Integer entityId) {
+		Provider updatedEntity = providersRepository.findById(entityId)
+													.orElseThrow(() -> new EntityNotFoundException("Provider does not exist!"));
+
+		entity.setId(entityId);
+		updatedEntity = providersRepository.save(providerMapper.toEntity(entity));
+		return providerMapper.toDto(updatedEntity);
+	}
+	
+	@Transactional
+	public ProviderDTO save(ProviderDTO entity) {
+		Provider forSave = providersRepository.save(providerMapper.toEntity(entity));
+		return providerMapper.toDto(forSave);
+	}
+	
+	@Transactional
+	public LitePage<ProviderDTO> findAllByFilter(String name, String identNum, Boolean active, PagingSorting pagingSorting) {
+		List<Provider> results = providersRepository.findAllByFilter(name, identNum, active, pagingSorting);
+		
+		return LitePage.<ProviderDTO>builder()
+					   .content(results.stream()
+									     .map(p -> providerMapper.toDto(p))
+									     .collect(Collectors.toList()))
+					   .pageNumber(pagingSorting.getPageNumber())
+					   .pageSize(pagingSorting.getPageSize())
+					   .totalElements(providersRepository.countAllByFilter(name, identNum, active))
+					   .build();
+	}
+}

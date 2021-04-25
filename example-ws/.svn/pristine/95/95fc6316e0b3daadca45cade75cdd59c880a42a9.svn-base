@@ -1,0 +1,70 @@
+package bg.infosys.crc.admin.service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
+import bg.infosys.crc.admin.controller.error.APIErrorCodes;
+import bg.infosys.crc.admin.controller.exception.BadRequestException;
+import bg.infosys.crc.admin.dto.LitePage;
+import bg.infosys.crc.admin.dto.MeasurementCycleDTO;
+import bg.infosys.crc.admin.dto.PagingSorting;
+import bg.infosys.crc.admin.entity.MeasurementCycle;
+import bg.infosys.crc.admin.repository.MeasurementCycleRepository;
+import bg.infosys.crc.admin.service.mapper.MeasurementCycleMapper;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class MeasurementCycleService {
+	private final MeasurementCycleRepository measurementCycleRepository;
+	private final MeasurementCycleMapper measurementCycleMapper;
+	
+	public List<MeasurementCycleDTO> findAll() {
+		return measurementCycleRepository.findAll().stream()
+											.map(p -> measurementCycleMapper.toDto(p))
+											.collect(Collectors.toList());
+	}
+	
+	public Optional<MeasurementCycleDTO> findById(Integer entityId) {
+		return measurementCycleRepository.findById(entityId).map(p -> measurementCycleMapper.toDto(p));
+	}
+	
+	@Transactional
+	public MeasurementCycleDTO update(MeasurementCycleDTO entity, Integer entityId) {
+		if (!entity.getEnabled() && measurementCycleRepository.areAllDisabled(entityId)) {
+			throw new BadRequestException(APIErrorCodes.LOOP_CYCLES_ALL_DISABLED);
+		}
+		MeasurementCycle updatedEntity = measurementCycleRepository.findById(entityId)
+													.orElseThrow(() -> new EntityNotFoundException("Cycle does not exist!"));
+
+		entity.setId(entityId);
+		updatedEntity = measurementCycleRepository.save(measurementCycleMapper.toEntity(entity));
+		return measurementCycleMapper.toDto(updatedEntity);
+	}
+	
+	@Transactional
+	public MeasurementCycleDTO save(MeasurementCycleDTO entity) {
+		MeasurementCycle forSave = measurementCycleRepository.save(measurementCycleMapper.toEntity(entity));
+		return measurementCycleMapper.toDto(forSave);
+	}
+	
+	@Transactional
+	public LitePage<MeasurementCycleDTO> findAllByFilter(String name, Boolean enabled, PagingSorting pagingSorting) {
+		List<MeasurementCycle> results = measurementCycleRepository.findAllByFilter(name, enabled, pagingSorting);
+		
+		return LitePage.<MeasurementCycleDTO>builder()
+					   .content(results.stream()
+									     .map(p -> measurementCycleMapper.toDto(p))
+									     .collect(Collectors.toList()))
+					   .pageNumber(pagingSorting.getPageNumber())
+					   .pageSize(pagingSorting.getPageSize())
+					   .totalElements(measurementCycleRepository.countAllByFilter(name, enabled))
+					   .build();
+	}
+}

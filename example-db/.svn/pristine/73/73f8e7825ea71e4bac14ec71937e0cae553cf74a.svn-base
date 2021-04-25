@@ -1,0 +1,45 @@
+package bg.infosys.crc.admin.entity;
+
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "quality_checks", schema = "test")
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class QualityCheck {
+	@Id
+	private String uuid;
+	public static final String _uuid = "uuid";
+
+	@Column(name = "applicant_ip")
+	private String applicantIP;
+	public static final String _applicantIP = "applicantIP";
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "check_type_id")
+	private CheckType type;
+	public static final String _type = "type";
+
+	@Column(name = "check_ts")
+	private LocalDateTime checkTS;
+	public static final String _checkTS = "checkTS";
+
+	@Column(name = "is_successful")
+	private Boolean isSuccessful;
+	public static final String _isSuccessful = "isSuccessful";
+}

@@ -1,0 +1,68 @@
+package bg.infosys.crc.admin.service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
+import bg.infosys.crc.admin.dto.LitePage;
+import bg.infosys.crc.admin.dto.PagingSorting;
+import bg.infosys.crc.admin.dto.WebAppLabelDTO;
+import bg.infosys.crc.admin.entity.WebAppLabel;
+import bg.infosys.crc.admin.repository.WebAppLabelRepository;
+import bg.infosys.crc.admin.service.mapper.WebAppLabelMapper;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class WebAppLabelService {
+	private final WebAppLabelRepository webAppLabelRepository;
+	private final WebAppLabelMapper webAppLabelMapper;
+	
+	public List<WebAppLabelDTO> findAll() {
+		return webAppLabelRepository.findAll().stream()
+											  .map(s -> webAppLabelMapper.toDto(s))
+											  .collect(Collectors.toList());
+	}
+	
+	public Optional<WebAppLabelDTO> findByCode(String entityId) {
+		return webAppLabelRepository.findById(entityId).map(p -> webAppLabelMapper.toDto(p));
+	}
+	
+	@Transactional
+	public WebAppLabelDTO update(WebAppLabelDTO entity, String entityId) {
+		WebAppLabel updatedEntity = webAppLabelRepository
+								.findById(entityId)
+								.orElseThrow(() -> new EntityNotFoundException("Web App Label does not exist!"));
+
+		entity.setCode(entityId);
+		entity.setEditedAt(LocalDateTime.now());
+		updatedEntity = webAppLabelRepository.save(webAppLabelMapper.toEntity(entity));
+		return webAppLabelMapper.toDto(updatedEntity);
+	}
+	
+	@Transactional
+	public WebAppLabelDTO save(WebAppLabelDTO entity) {
+		WebAppLabel forSave = webAppLabelRepository.save(webAppLabelMapper.toEntity(entity));
+		return webAppLabelMapper.toDto(forSave);
+	}
+	
+	@Transactional
+	public LitePage<WebAppLabelDTO> findAllByFilter(String code, String languageCode, PagingSorting pagingSorting) {
+		List<WebAppLabel> results = webAppLabelRepository.findAllByFilter(code, languageCode, pagingSorting);
+		
+		return LitePage.<WebAppLabelDTO>builder()
+					   .content(results.stream()
+									     .map(p -> webAppLabelMapper.toDto(p))
+									     .collect(Collectors.toList()))
+					   .pageNumber(pagingSorting.getPageNumber())
+					   .pageSize(pagingSorting.getPageSize())
+					   .totalElements(webAppLabelRepository.countAllByFilter(code, languageCode))
+					   .build();
+	}
+}

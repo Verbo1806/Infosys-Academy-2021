@@ -1,0 +1,27 @@
+package bg.infosys.crc.admin.controller.docs;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+
+import bg.infosys.crc.admin.dto.FullQualityCheckDTO;
+import bg.infosys.crc.admin.dto.LitePage;
+import bg.infosys.crc.admin.dto.MeasurementPagingDTO;
+import bg.infosys.crc.admin.dto.NetworkTypeDTO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = "Measurements")
+public interface IMeasurementController {
+
+	@ApiOperation(value = "Return one page of Quality Checks", notes = "This method will return one page of Measurements matching the passed filters")
+	public LitePage<MeasurementPagingDTO> findAllPageable(int page, int size, String sortBy, String sortDirection,
+			Long uid, String uuid, Integer uploadSpeed, Integer downloadSpeed, Integer provider, String region, Integer network, LocalDate periodFrom, LocalDate periodTo);
+	
+	@ApiOperation(value = "Find full Quality Check information", notes = "This method will return Measurement with given id and it's corresponding measurement or HTTP Status 404 Not Found")
+	public ResponseEntity<FullQualityCheckDTO> findFull(String entityId);
+	
+	@ApiOperation(value = "Find all Network Types", notes = "This method will return all Regions")
+	public List<NetworkTypeDTO> findAllNetworkTypes();
+}

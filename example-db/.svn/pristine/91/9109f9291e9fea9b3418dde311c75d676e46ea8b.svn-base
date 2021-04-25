@@ -1,0 +1,14 @@
+package bg.infosys.crc.admin.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import bg.infosys.crc.admin.entity.config.MeasurementCycle;
+import bg.infosys.crc.admin.repository.custom.MeasurementCycleRepositoryCustom;
+
+@Repository
+public interface MeasurementCycleRepository extends JpaRepository<MeasurementCycle, Integer>, MeasurementCycleRepositoryCustom {
+	List<MeasurementCycle> findByEnabled(Boolean enabled);
+}

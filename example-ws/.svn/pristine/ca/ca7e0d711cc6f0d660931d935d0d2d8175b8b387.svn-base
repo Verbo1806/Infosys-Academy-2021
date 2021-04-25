@@ -1,0 +1,60 @@
+package bg.infosys.crc.admin.controller;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import bg.infosys.crc.admin.config.ControllerConfig;
+import bg.infosys.crc.admin.config.Permissions;
+import bg.infosys.crc.admin.controller.docs.IQualityCheckController;
+import bg.infosys.crc.admin.dto.FullQualityCheckDTO;
+import bg.infosys.crc.admin.dto.LitePage;
+import bg.infosys.crc.admin.dto.PagingSorting;
+import bg.infosys.crc.admin.dto.QualityCheckDTO;
+import bg.infosys.crc.admin.service.QualityCheckService;
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping(ControllerConfig.QUALITY_CHECKS_URL)
+public class QualityCheckController implements IQualityCheckController {
+	private final QualityCheckService qualityCheckService;
+
+	@GetMapping
+	@ResponseStatus(HttpStatus.OK)
+	@Secured(Permissions.VIEW_MEAS_HIST)
+	public List<QualityCheckDTO> findAll() {
+		return qualityCheckService.findAll();
+	}
+	
+	@GetMapping("/paging")
+	@ResponseStatus(HttpStatus.OK)
+	@Secured(Permissions.VIEW_MEAS_HIST)
+	public LitePage<QualityCheckDTO> findAllPageable(
+	@RequestParam(defaultValue = "0") int page,
+	       @RequestParam(defaultValue = "5") int size,
+	       @RequestParam(defaultValue = "uuid", required = false) String sortBy,
+	       @RequestParam(defaultValue = "asc", required = false) String sortDirection,
+	       @RequestParam(required = false) String uuid,
+	       @RequestParam(required = false) Boolean isSuccessful) {
+
+		return qualityCheckService.findAllByFilter(uuid, isSuccessful, new PagingSorting(page, size, sortBy, sortDirection));
+	}
+	
+	@GetMapping("full/{entityId}")
+	@ResponseStatus(HttpStatus.OK)
+	@Secured(Permissions.VIEW_MEAS_HIST)
+	public ResponseEntity<FullQualityCheckDTO> findFull(@PathVariable String entityId) {
+		Optional<FullQualityCheckDTO> dto = qualityCheckService.findFull(entityId);
+	    return dto.map(ResponseEntity::ok).orElseGet(()-> ResponseEntity.notFound().build());
+	}
+}

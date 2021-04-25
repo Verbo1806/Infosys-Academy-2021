@@ -1,0 +1,34 @@
+package bg.infosys.crc.admin.controller.docs;
+
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+
+import bg.infosys.crc.admin.dto.AuthorityDTO;
+import bg.infosys.crc.admin.dto.AuthorityPagingDTO;
+import bg.infosys.crc.admin.dto.LitePage;
+import bg.infosys.crc.admin.dto.PermissionDTO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = "Authorities and Permissions")
+public interface IAuthorityController {
+
+	@ApiOperation(value = "Find all Authorities", notes = "This method will return all Authorities")
+	public List<AuthorityDTO> findAll();
+	
+	@ApiOperation(value = "Return one page of Authorities", notes = "This method will return one page of Authorities matching the passed filters")
+	public LitePage<AuthorityPagingDTO> findAllPageable(int page, int size, String sortBy, String sortDirection, String name);
+	
+	@ApiOperation(value = "Find one Authority", notes = "This method will return Authority matching the passed id or HTTP Status 404 Not Found")
+	public ResponseEntity<AuthorityDTO> findOne(Integer entityId);
+	
+	@ApiOperation(value = "Create Authority", notes = "This method will create Authority")
+	public ResponseEntity<AuthorityDTO> create(AuthorityDTO entity);
+	
+	@ApiOperation(value = "Update Authority", notes = "This method will update the Authority with given id or HTTP Status 404 Not Found")
+	public ResponseEntity<AuthorityDTO> update(Integer entityId, AuthorityDTO entity);
+	
+	@ApiOperation(value = "Find all Permissions", notes = "This method will return all Permissions")
+	public List<PermissionDTO> findAllPermissions();
+}

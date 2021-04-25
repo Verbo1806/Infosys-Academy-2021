@@ -1,0 +1,61 @@
+package bg.infosys.crc.admin.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "network_type")
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class NetworkType {
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer uid;
+	public static final String _uid = "uid";
+	
+	@Column(name = _name)
+	private String name;
+	public static final String _name = "name";
+	
+	@Column(name = "group_name")
+	private String groupName;
+	public static final String _groupName = "groupName";
+	
+//	@Column(name = _aggregate)
+//	private String aggregate;
+//	public static final String _aggregate = "aggregate";
+	
+	@Column(name = _type)
+	private String type;
+	public static final String _type = "type";
+	
+	@Column(name = "technology_order")
+	private Integer technologyOrder;
+	public static final String _technologyOrder = "technologyOrder";
+	
+	@Column(name = "min_speed_download_kbps")
+	private Integer minSpeedDownloadKbps;
+	public static final String _minSpeedDownloadKbps = "minSpeedDownloadKbps";
+	
+	@Column(name = "max_speed_download_kbps")
+	private Integer maxSpeedDownloadKbps;
+	public static final String _maxSpeedDownloadKbps = "maxSpeedDownloadKbps";
+	
+	@Column(name = "min_speed_upload_kbps")
+	private Integer minSpeedUploadKbps;
+	public static final String _minSpeedUploadKbps = "minSpeedUploadKbps";
+	
+	@Column(name = "max_speed_upload_kbps")
+	private Integer maxSpeedUploadKbps;
+	public static final String _maxSpeedUploadKbps = "maxSpeedUploadKbps";
+}

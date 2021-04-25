@@ -1,0 +1,47 @@
+package bg.infosys.crc.admin.dto;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import bg.infosys.common.utils.DateTimeUtil;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@NoArgsConstructor
+@JsonInclude(Include.NON_NULL)
+public class MeasurementPagingDTO {
+	@Setter private Long id;
+	private String uuid;
+	
+	@JsonFormat(pattern=DateTimeUtil.DATETIME_FORMAT)
+	private LocalDateTime time;
+	
+	private Integer speedUpload;
+	private Integer speedDownload;
+	private Long ping;
+	private Integer signalStrength;
+
+	private String provider;
+	private String region;
+	private String networkType;
+	
+	public MeasurementPagingDTO(Long uid, UUID uuid, LocalDateTime time, Integer speedUpload, Integer speedDownload, Long ping, Integer signalStrength,
+			String provider, String region, String networkType) {
+		this.id = uid;
+		this.uuid = uuid.toString();
+		this.time = time;
+		this.speedUpload = speedUpload != null ? speedUpload / 1000 : null; // kbps to mbps
+		this.speedDownload = speedDownload != null ? speedDownload / 1000 : null; // kbps to mbps
+		this.ping = ping != null ? ping / 1000000 : null;
+		this.signalStrength = signalStrength;
+		this.provider = provider;
+		this.region = region;
+		this.networkType = networkType;
+	}
+}

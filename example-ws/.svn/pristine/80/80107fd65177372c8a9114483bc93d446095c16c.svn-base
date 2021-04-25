@@ -1,0 +1,54 @@
+package bg.infosys.crc.admin.dto;
+
+import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import bg.infosys.common.utils.DateTimeUtil;
+import bg.infosys.crc.admin.entity.QualityCheck;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonInclude(Include.NON_NULL)
+@ApiModel(description = "Class representing a full measurement in the application")
+public class FullQualityCheckDTO {
+	@ApiModelProperty(notes = "Unique string identifier of the Quality Check", example = "15231314", position = 0)
+	private String uuid;
+	
+	@ApiModelProperty(notes = "IP address of the applicant", example = "192.158.1.38", position = 1)
+	private String applicantIP;
+	
+	@ApiModelProperty(notes = "Check type of the check", example = "Type 1", position = 2)
+	private String type;
+	
+	@ApiModelProperty(notes = "Timestamp of the check", example = "18.12.2021 13:06:57", position = 3)
+	@JsonFormat(pattern=DateTimeUtil.DATETIME_FORMAT)
+	private LocalDateTime checkTS;
+	
+	@ApiModelProperty(notes = "State of the check", example = "true", position = 4)
+	private Boolean isSuccessful;
+	
+	@ApiModelProperty(notes = "Measurement information", position = 5)
+	@Setter private MeasurementDTO measurement;
+	
+	public static FullQualityCheckDTO toDto(QualityCheck entity) {
+		return FullQualityCheckDTO.builder()
+					  .uuid(entity.getUuid())
+					  .applicantIP(entity.getApplicantIP())
+					  .type(entity.getType() != null ? entity.getType().getName() : null)
+					  .checkTS(entity.getCheckTS())
+					  .isSuccessful(entity.getIsSuccessful())
+					  .build();
+	}
+}

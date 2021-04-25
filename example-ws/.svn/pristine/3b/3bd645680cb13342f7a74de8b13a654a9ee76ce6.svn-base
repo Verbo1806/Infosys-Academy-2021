@@ -1,0 +1,270 @@
+CREATE SCHEMA config AUTHORIZATION rmbt;
+
+-- SEQUENCES
+
+-- DROP SEQUENCE config.measurement_cycles_id_seq;
+
+CREATE SEQUENCE config.measurement_cycles_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 2
+	CACHE 1
+	NO CYCLE;
+
+-- DROP SEQUENCE config.speeds_id_seq;
+
+CREATE SEQUENCE config.speeds_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 9223372036854775807
+	START 4
+	CACHE 1
+	NO CYCLE;
+
+
+--- TABLES
+
+-- DROP TABLE config.web_app_labels;
+
+CREATE TABLE config.web_app_labels (
+	code varchar NOT NULL,
+	language_code varchar NOT NULL,
+	"text" varchar NOT NULL,
+	edited_at timestamp NOT NULL,
+	CONSTRAINT web_app_labels_pk PRIMARY KEY (code)
+);
+
+-- Permissions
+
+ALTER TABLE config.web_app_labels OWNER TO rmbt;
+GRANT ALL ON TABLE config.web_app_labels TO rmbt;
+
+-- DROP TABLE config.speeds;
+
+CREATE TABLE config.speeds (
+	id serial NOT NULL,
+	"name" varchar(255) NOT NULL,
+	range_from int4 NOT NULL,
+	range_to int4 NOT NULL,
+	active bool NOT NULL,
+	CONSTRAINT speeds_pk PRIMARY KEY (id)
+);
+
+-- Permissions
+
+ALTER TABLE config.speeds OWNER TO rmbt;
+GRANT ALL ON TABLE config.speeds TO rmbt;
+
+-- DROP TABLE config.params_visibility;
+
+CREATE TABLE config.params_visibility (
+	code varchar(64) NOT NULL,
+	visible bool NOT NULL,
+	order_num int4 NOT NULL,
+	CONSTRAINT params_visibility_pk PRIMARY KEY (code)
+);
+
+-- Permissions
+
+ALTER TABLE config.params_visibility OWNER TO rmbt;
+GRANT ALL ON TABLE config.params_visibility TO rmbt;
+
+-- DROP TABLE config.measurement_parameters;
+
+CREATE TABLE config.measurement_parameters (
+	code varchar(16) NOT NULL,
+	value varchar(255) NOT NULL,
+	value_type varchar(16) NOT NULL,
+	measurement_type varchar(8) NOT NULL,
+	description varchar(1024) NOT NULL,
+	CONSTRAINT measurement_parameters_pk PRIMARY KEY (code)
+);
+
+-- Permissions
+
+ALTER TABLE config.measurement_parameters OWNER TO rmbt;
+GRANT ALL ON TABLE config.measurement_parameters TO rmbt;
+
+-- DROP TABLE config.measurement_cycles;
+
+CREATE TABLE config.measurement_cycles (
+	id serial NOT NULL,
+	"name" varchar(255) NOT NULL,
+	loop_count int4 NOT NULL,
+	time_between int4 NOT NULL,
+	enabled bool NOT NULL
+);
+
+-- Permissions
+
+ALTER TABLE config.measurement_cycles OWNER TO rmbt;
+GRANT ALL ON TABLE config.measurement_cycles TO rmbt;
+
+-- PUBLIC
+ALTER TABLE public.provider ADD ident_num varchar(255) NULL;
+ALTER TABLE public.provider ADD ip_range varchar(255) NULL;
+ALTER TABLE public.provider ADD net_owner varchar(255) NULL;
+ALTER TABLE public.provider ADD active bool NULL;
+
+-- DROP TABLE public.n_regions;
+
+CREATE TABLE public.n_regions (
+	code varchar(5) NOT NULL,
+	"name" varchar(30) NULL,
+	name_lat varchar(30) NULL,
+	order_num int2 NULL,
+	CONSTRAINT n_regions_pk PRIMARY KEY (code)
+);
+
+-- Permissions
+
+ALTER TABLE public.n_regions OWNER TO rmbt;
+GRANT ALL ON TABLE public.n_regions TO rmbt;
+
+ALTER TABLE public.test ADD region_code varchar(5) NULL;
+
+-- DATA
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('BLG', 'Благоевград', 'Blagoevgrad', 1);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('BGS', 'Бургас', 'Burgas', 2);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('VAR', 'Варна', 'Varna', 3);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('VTR', 'Велико Търново', 'Veliko Tarnovo', 4);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('VID', 'Видин', 'Vidin', 5);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('VRC', 'Враца', 'Vratsa', 6);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('GAB', 'Габрово', 'Gabrovo', 7);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('DOB', 'Добрич', 'Dobrich', 8);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('KRZ', 'Кърджали', 'Kardzhali', 9);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('KNL', 'Кюстендил', 'Kyustendil', 10);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('LOV', 'Ловеч', 'Lovech', 11);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('MON', 'Монтана', 'Montana', 12);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('PAZ', 'Пазарджик', 'Pazardzhik', 13);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('PER', 'Перник', 'Pernik', 14);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('PVN', 'Плевен', 'Pleven', 15);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('PDV', 'Пловдив', 'Plovdiv', 16);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('RAZ', 'Разград', 'Razgrad', 17);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('RSE', 'Русе', 'Ruse', 18);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('SLS', 'Силистра', 'Silistra', 19);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('SLV', 'Сливен', 'Sliven', 20);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('SML', 'Смолян', 'Smolyan', 21);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('SOF', 'София (столица)', 'Sofia cap.', 22);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('SFO', 'София', 'Sofia', 23);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('SZR', 'Стара Загора', 'Stara Zagora', 24);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('TGV', 'Търговище', 'Targovishte', 25);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('HKV', 'Хасково', 'Haskovo', 26);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('SHU', 'Шумен', 'Shumen', 27);
+INSERT INTO n_regions
+(code, "name", name_lat, order_num)
+VALUES('JAM', 'Ямбол', 'Yambol', 28);
+
+INSERT INTO measurement_parameters
+(code, value, value_type, measurement_type, description)
+VALUES('QM_SLOWSTART', '1', 'INT', 'QM', 'Период на изпращане на slowstartX.dat');
+INSERT INTO measurement_parameters
+(code, value, value_type, measurement_type, description)
+VALUES('QM_PAR_CONN', '5', 'INT', 'QM', 'Брой паралелни връзки');
+INSERT INTO measurement_parameters
+(code, value, value_type, measurement_type, description)
+VALUES('QM_EXEC_TIME', '10.5', 'DOUBLE', 'QM', 'Време на изпълнение');
+INSERT INTO measurement_parameters
+(code, value, value_type, measurement_type, description)
+VALUES('QM_IND_MEAS', '8', 'INT', 'QM', 'Брой индивидуални измервания за закъснение (за всяка сесия на измерване)');
+INSERT INTO measurement_parameters
+(code, value, value_type, measurement_type, description)
+VALUES('QM_RES', '0.1', 'DOUBLE', 'QM', 'Разделителна способност за измерване на закъснението');
+INSERT INTO measurement_parameters
+(code, value, value_type, measurement_type, description)
+VALUES('QM_WAIT_TIME', '1.5', 'DOUBLE', 'QM', 'Време за изчакване при обратно получаване на пакет');
+INSERT INTO measurement_parameters
+(code, value, value_type, measurement_type, description)
+VALUES('TM_3', '15', 'INT', 'TM', 'Времето за стартиране на видеоклипа от момента на заявяване (video start time) (ms)');
+INSERT INTO measurement_parameters
+(code, value, value_type, measurement_type, description)
+VALUES('TM_4', '5', 'INT', 'TM', 'Брой прекъсвания, изискващи ново заявяване (number of cuts)');
+INSERT INTO measurement_parameters
+(code, value, value_type, measurement_type, description)
+VALUES('TM_5', '11', 'INT', 'TM', 'Средно време на прекъсванията (average cut time) (ms)');
+INSERT INTO measurement_parameters
+(code, value, value_type, measurement_type, description)
+VALUES('TM_6', '51', 'PERCENT', 'TM', 'Съотношение реално време/видео време за стрийминг сесия (ratio “real time/video time”)');
+INSERT INTO measurement_parameters
+(code, value, value_type, measurement_type, description)
+VALUES('TM_7', '10', 'INT', 'TM', 'Предадена битова скорост (delivered bitrate) (bps, Kbps, Mbps) при използване на една или няколко платформи за видео стрийминг');
+INSERT INTO measurement_parameters
+(code, value, value_type, measurement_type, description)
+VALUES('TM_8', '2', 'INT', 'TM', 'Време за стартиране на аудио материала (ms)');
+INSERT INTO measurement_parameters
+(code, value, value_type, measurement_type, description)
+VALUES('TM_9', '3', 'INT', 'TM', 'Брой прекъсвания - над който качеството на аудио стрийминг ще бъде определено като незадоволително');
+INSERT INTO measurement_parameters
+(code, value, value_type, measurement_type, description)
+VALUES('TM_10', '4', 'INT', 'TM', 'Средно време на прекъсване (ms)');
+INSERT INTO measurement_parameters
+(code, value, value_type, measurement_type, description)
+VALUES('TM_13', '35.41', 'PERCENT', 'TM', 'Коефициент на пропаднали повиквания (Drop Call Ratio/DCR)');
+INSERT INTO measurement_parameters
+(code, value, value_type, measurement_type, description)
+VALUES('TM_2', 'www.google.bg, www.google.com', 'STRING', 'TM', 'Референтна уебстраница');
+INSERT INTO measurement_parameters
+(code, value, value_type, measurement_type, description)
+VALUES('TM_11', '78.91', 'PERCENT', 'TM', 'Коефициент на успешно извършените повиквания (Call Set-up Success Rate/CSSR)');
+INSERT INTO measurement_parameters
+(code, value, value_type, measurement_type, description)
+VALUES('TM_12', '81.33', 'PERCENT', 'TM', 'Коефициент на успешно приключилите повиквания (Call Success Rate/CSR)');
+INSERT INTO measurement_parameters
+(code, value, value_type, measurement_type, description)
+VALUES('TM_1', '3', 'INT', 'TM', 'Времето, необходимо за зареждане на референтна уеб страница (секунди), над което Качеството на уеб сърфиране ще се определи като незадоволително');
+

@@ -1,0 +1,45 @@
+package bg.infosys.crc.admin.dto;
+
+import java.time.LocalDateTime;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import bg.infosys.common.utils.DateTimeUtil;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonInclude(Include.NON_NULL)
+@ApiModel(description = "Class representing a measurement data for paging")
+public class QualityCheckDTO {
+	@ApiModelProperty(notes = "Unique string identifier of the Quality Check", example = "15231314", position = 0)
+	@Setter private String uuid;
+	
+	@ApiModelProperty(notes = "IP address of the applicant", example = "192.158.1.38", position = 1)
+	@NotBlank(message = "'applicantIP' cannot be blank")
+	@Size(max = 64, message = "'applicantIP' length must be less than 65 characters")
+	private String applicantIP;
+	
+	@ApiModelProperty(notes = "Check type of the check", position = 2)
+	private CheckTypeDTO type;
+	
+	@ApiModelProperty(notes = "Timestamp of the check", example = "18.12.2021 13:06:57", position = 3)
+	@JsonFormat(pattern=DateTimeUtil.DATETIME_FORMAT)
+	private LocalDateTime checkTS;
+	
+	@ApiModelProperty(notes = "State of the check", example = "true", position = 4)
+	private Boolean isSuccessful;
+}

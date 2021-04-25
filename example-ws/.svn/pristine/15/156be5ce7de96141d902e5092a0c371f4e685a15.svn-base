@@ -1,0 +1,53 @@
+package bg.infosys.crc.admin.dto;
+
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import bg.infosys.crc.admin.entity.CheckType;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonInclude(Include.NON_NULL)
+@ApiModel(description = "Class representing a check type in the application")
+public class CheckTypeDTO {
+	@ApiModelProperty(notes = "Unique identifier of the type", example = "3", required = true, position = 0)
+	private Integer id;
+	
+	@ApiModelProperty(notes = "Name of the type", example = "Type 3", required = true, position = 1)
+	@NotBlank(message = "'name' cannot be blank")
+	@Size(max = 255, message = "'name' length must be less than 256 characters")
+	private String name;
+	
+	@ApiModelProperty(notes = "Check type description", example = "This is Type 3 description", required = false, position = 2)
+	@NotBlank(message = "'description' cannot be blank")
+	@Size(max = 1024, message = "'description' length must be less than 1025 characters")
+	private String description;
+	
+	public static CheckTypeDTO toDto(CheckType entity) {
+		return CheckTypeDTO.builder()
+						  .id(entity.getId())
+						  .name(entity.getName())
+						  .description(entity.getDescription())
+						  .build();
+	}
+	
+	public static CheckType toEntity(CheckTypeDTO dto) {
+		return CheckType.builder()
+					   .id(dto.getId())
+					   .name(dto.getName())
+					   .description(dto.getDescription())
+					   .build();
+	}
+}

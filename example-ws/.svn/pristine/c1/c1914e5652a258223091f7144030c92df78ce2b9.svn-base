@@ -1,0 +1,33 @@
+package bg.infosys.crc.admin.service.mapper;
+
+import org.springframework.stereotype.Service;
+
+import bg.infosys.crc.admin.dto.MeasurementCycleDTO;
+import bg.infosys.crc.admin.entity.config.MeasurementCycle;
+
+@Service
+public class MeasurementCycleMapper implements IModelMapper<MeasurementCycleDTO, MeasurementCycle> {
+
+	@Override
+	public MeasurementCycleDTO toDto(MeasurementCycle entity) {
+		return MeasurementCycleDTO.builder()
+						  .id(entity.getId())
+						  .name(entity.getName())
+						  .loopCount(entity.getLoopCount())
+						  .timeBetween(entity.getTimeBetween())
+						  .enabled(entity.getEnabled())
+						  .build();
+	}
+
+	@Override
+	public MeasurementCycle toEntity(MeasurementCycleDTO dto) {
+		return MeasurementCycle.builder()
+					   .id(dto.getId())
+					   .name(dto.getName())
+					   .loopCount(dto.getLoopCount())
+					   .timeBetween(dto.getTimeBetween())
+					   .enabled(dto.getEnabled())
+					   .build();
+	}
+
+}

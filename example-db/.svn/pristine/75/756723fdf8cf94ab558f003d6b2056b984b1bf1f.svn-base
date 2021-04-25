@@ -1,0 +1,12 @@
+package bg.infosys.crc.admin.repository.custom;
+
+import java.util.List;
+
+import bg.infosys.crc.admin.dto.PagingSorting;
+import bg.infosys.crc.admin.entity.config.MeasurementCycle;
+
+public interface MeasurementCycleRepositoryCustom {
+	List<MeasurementCycle> findAllByFilter(String name, Boolean enabled, PagingSorting pagingSorting);
+	long countAllByFilter(String name, Boolean enabled);
+	boolean areAllDisabled(Integer id);
+}

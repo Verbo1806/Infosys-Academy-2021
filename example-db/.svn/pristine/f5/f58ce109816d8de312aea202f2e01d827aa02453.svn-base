@@ -1,0 +1,39 @@
+package bg.infosys.crc.admin.entity.config;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "measurement_parameters", schema = "config")
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class MeasurementParameter {
+	@Id
+	private String code;
+	public static final String _code = "code";
+	
+	@Column(name = "value")
+	private String value;
+	public static final String _value = "value";
+	
+	@Column(name = "value_type")
+	private String valueType;
+	public static final String _valueType = "valueType";
+
+	@Column(name = "measurement_type")
+	private String measurementType;
+	public static final String _measurementType = "measurementType";
+	
+	@Column(name = "description")
+	private String description;
+	public static final String _description = "description";
+}

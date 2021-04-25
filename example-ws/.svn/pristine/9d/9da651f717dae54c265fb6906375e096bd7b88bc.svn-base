@@ -1,0 +1,51 @@
+package bg.infosys.crc.admin.service;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
+import bg.infosys.common.exceptions.ResponseStatusException;
+import bg.infosys.common.ws.security.components.AuthService;
+import bg.infosys.crc.admin.dto.UserDTO;
+import bg.infosys.crc.admin.entity.security.User;
+import bg.infosys.crc.admin.repository.security.UserRepository;
+import bg.infosys.crc.admin.service.mapper.UserMapper;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+	private final AuthService		authService;
+	private final UserRepository	userRepository;
+	private final UserMapper		userMapper;
+	//private final AuthorityDAO		authorityDAO;
+
+	@Transactional
+	public UserDTO saveUser(UserDTO user) {
+		checkIfUsernameExists(user.getUsername(), null);
+		
+		User u = new User();
+		u.setUsername(user.getUsername());
+		u.setEnabled(user.getEnabled());
+		
+		String encodedPass = authService.encodePassword(user.getPassword());
+		u.setPassword(encodedPass);
+		
+		/*
+		 * if (user.getRoleId() != null) { Authority a =
+		 * authorityDAO.findById(user.getRoleId()); checkAuthorityForSingleUser(a,
+		 * null); u.getGrantedAuthorities().add(a); }
+		 */
+		u = userRepository.save(u);
+		return userMapper.toDto(u);
+	}
+	
+	private void checkIfUsernameExists(String username, Integer userId) {
+		if (userRepository.findByUsername(username, null) != null) {
+			throw new ResponseStatusException(HttpServletResponse.SC_CONFLICT,
+				"Username already exists", "usernameAlreadyExists");
+		}
+	}
+
+}

@@ -1,0 +1,12 @@
+package bg.infosys.crc.admin.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import bg.infosys.crc.admin.entity.config.MeasurementParameter;
+import bg.infosys.crc.admin.repository.custom.MeasurementParameterRepositoryCustom;
+
+@Repository
+public interface MeasurementParameterRepository extends JpaRepository<MeasurementParameter, String>, MeasurementParameterRepositoryCustom {
+
+}

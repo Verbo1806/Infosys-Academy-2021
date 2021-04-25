@@ -1,0 +1,11 @@
+package bg.infosys.crc.admin.repository.security.custom;
+
+import java.util.List;
+
+import bg.infosys.crc.admin.dto.PagingSorting;
+import bg.infosys.crc.admin.entity.security.Authority;
+
+public interface AuthorityRepositoryCustom {
+	List<Authority> findAllByFilter(String name, PagingSorting pagingSorting);
+	long countAllByFilter(String name);
+}

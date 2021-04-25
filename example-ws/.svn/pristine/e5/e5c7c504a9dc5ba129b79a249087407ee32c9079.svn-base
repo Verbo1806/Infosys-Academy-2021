@@ -1,0 +1,19 @@
+package bg.infosys.crc.admin.config;
+
+public class ControllerConfig {
+	private ControllerConfig() {}
+	
+	public static final String AUTHENTICATION_URL 		= "/auth";
+	public static final String USERS_URL 				= "/users";
+	public static final String AUTHORITIES_URL 			= "/authorities";
+	public static final String PERMISSIONS_URL 			= "/permissions";
+	
+	public static final String PROVIDERS_URL 			= "/providers";
+	public static final String SPEEDS_URL 				= "/speeds";
+	
+	public static final String MEASUREMENT_CYCLES_URL	= "/measurement-cycles";
+	public static final String MEASUREMENT_PARAMETERS_URL	= "/measurement-parameters";
+	public static final String WEB_APP_LABEL_URL		= "/web-app-labels";
+	public static final String PARAM_VISIBILITY			= "/param-visibility";
+	public static final String QUALITY_CHECKS_URL		= "/quality-checks";
+}

@@ -1,0 +1,33 @@
+package bg.infosys.crc.admin.service.mapper;
+
+import org.springframework.stereotype.Service;
+
+import bg.infosys.crc.admin.dto.SpeedDTO;
+import bg.infosys.crc.admin.entity.config.Speed;
+
+@Service
+public class SpeedMapper implements IModelMapper<SpeedDTO, Speed> {
+
+	@Override
+	public SpeedDTO toDto(Speed entity) {
+		return SpeedDTO.builder()
+					  .id(entity.getId())
+					  .name(entity.getName())
+					  .rangeFrom(entity.getRangeFrom())
+					  .rangeTo(entity.getRangeTo())
+					  .active(entity.getActive())
+					  .build();
+	}
+
+	@Override
+	public Speed toEntity(SpeedDTO dto) {
+		return Speed.builder()
+					.id(dto.getId())
+					.name(dto.getName())
+					.rangeFrom(dto.getRangeFrom())
+					.rangeTo(dto.getRangeTo())
+					.active(dto.getActive())
+					.build();
+	}
+
+}

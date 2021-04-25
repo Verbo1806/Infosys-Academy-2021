@@ -1,0 +1,84 @@
+package bg.infosys.crc.admin.repository.custom.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+import bg.infosys.crc.admin.dto.PagingSorting;
+import bg.infosys.crc.admin.entity.Provider;
+import bg.infosys.crc.admin.entity.Speed;
+import bg.infosys.crc.admin.repository.custom.GenericRepository;
+import bg.infosys.crc.admin.repository.custom.SpeedRepositoryCustom;
+import bg.infosys.crc.admin.util.SortingUtil;
+
+public class SpeedRepositoryCustomImpl extends GenericRepository<Provider> implements SpeedRepositoryCustom {
+
+	@Override
+	public List<Speed> findAllByFilter(String name, Integer rangeFrom, Integer rangeTo, Boolean active, PagingSorting paginSorting) {
+		CriteriaBuilder builder = criteriaBuilder();
+		CriteriaQuery<Speed> criteria = builder.createQuery(Speed.class);
+		Root<Speed> root = criteria.from(Speed.class);
+		
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		
+		if (name != null) {			
+			predicates.add(builder.like(root.get(Speed._name), "%" + name + "%"));
+		}
+		
+		if (rangeFrom != null) {
+			predicates.add(builder.greaterThanOrEqualTo(root.get(Speed._rangeFrom), rangeFrom));
+		}
+		
+		if (rangeTo != null) {
+			predicates.add(builder.lessThanOrEqualTo(root.get(Speed._rangeTo), rangeTo));
+		}
+		
+		if (active != null) {
+			predicates.add(builder.equal(root.get(Provider._active), true));
+		}
+		
+		SortingUtil.<Speed>sort(criteria, builder, root.get(paginSorting.getSortBy()), paginSorting.getSortDirection());
+		criteria.where(builder.and(predicates.toArray(new Predicate[predicates.size()])));
+		
+		return createQuery(criteria).setFirstResult(paginSorting.getPageSize() * paginSorting.getPageNumber())
+									.setMaxResults(paginSorting.getPageSize())
+									.getResultList();
+	}
+
+	@Override
+	public long countAllByFilter(String name, Integer rangeFrom, Integer rangeTo, Boolean active) {
+		CriteriaBuilder builder = criteriaBuilder();
+		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+		Root<Speed> root = criteria.from(Speed.class);
+		
+		criteria.select(builder.countDistinct(root));
+		
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		
+		if (name != null) {			
+			predicates.add(builder.like(root.get(Speed._name), "%" + name + "%"));
+		}
+		
+		if (rangeFrom != null) {
+			predicates.add(builder.greaterThanOrEqualTo(root.get(Speed._rangeFrom), rangeFrom));
+		}
+		
+		if (rangeTo != null) {
+			predicates.add(builder.lessThanOrEqualTo(root.get(Speed._rangeTo), rangeTo));
+		}
+		
+		if (active != null) {
+			predicates.add(builder.equal(root.get(Provider._active), true));
+		}
+		
+		criteria.where(builder.and(predicates.toArray(new Predicate[predicates.size()])));
+		
+		return createQuery(criteria).getSingleResult();
+	}
+
+
+}

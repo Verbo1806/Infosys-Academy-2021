@@ -1,0 +1,19 @@
+package bg.infosys.crc.admin.repository.custom;
+
+import java.util.List;
+import java.util.Optional;
+
+import bg.infosys.crc.admin.dto.MeasurementFilterDTO;
+import bg.infosys.crc.admin.dto.MeasurementPagingDTO;
+import bg.infosys.crc.admin.dto.PagingSorting;
+import bg.infosys.crc.admin.dto.reports.Report1DTO;
+import bg.infosys.crc.admin.dto.reports.filter.Report1FilterDTO;
+import bg.infosys.crc.admin.entity.config.Speed;
+
+public interface TestRepositoryCustom {
+	List<MeasurementPagingDTO> findAllByFilter(MeasurementFilterDTO filter, Optional<Speed> uploadSpeed, Optional<Speed> downloadSpeed, PagingSorting pagingSorting);
+	long countAllByFilter(MeasurementFilterDTO filter, Optional<Speed> uploadSpeed, Optional<Speed> downloadSpeed);
+	
+	List<Report1DTO> findReport1ByFilter(Report1FilterDTO filter, Optional<Speed> downloadSpeed, PagingSorting pagingSorting);
+	long countReport1ByFilter(Report1FilterDTO filter, Optional<Speed> downloadSpeed);
+}

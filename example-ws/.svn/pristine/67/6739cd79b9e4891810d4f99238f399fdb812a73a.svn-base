@@ -1,0 +1,28 @@
+package bg.infosys.crc.admin.dto;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonInclude(Include.NON_NULL)
+@ApiModel(description = "Class representing an authority permission in the application")
+public class PermissionDTO {
+	@ApiModelProperty(notes = "Unique identifier of the Permission", example = "1", position = 0)
+	private Integer id;
+	
+	@ApiModelProperty(notes = "Permission name", example = "VIEW_MAP", position = 1)
+	private String name;
+	
+	@ApiModelProperty(notes = "Permission description", example = "Достъпва Карта", position = 2)
+	private String description;
+}

@@ -1,0 +1,72 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<groupId>bg.infosys.crc</groupId>
+	<artifactId>crc-admin-db</artifactId>
+	<version>1.0</version>
+
+	<repositories>
+		<repository>
+			<id>infosys-m2</id>
+			<name>Infosys Maven2 Repository</name>
+			<url>http://devops.infosys.bg/artifactory/maven2</url>
+		</repository>
+	</repositories>
+	
+	<properties>
+		<!-- Java and Maven plug-ins Versions -->
+		<v.java>11</v.java>
+		<v.compiler.plugin>3.8.1</v.compiler.plugin>
+		<maven.compiler.source>1.8</maven.compiler.source>
+     	<maven.compiler.target>1.8</maven.compiler.target>
+
+		<!-- Infosys Common Version -->
+		<v.infosys.common>2.9</v.infosys.common>
+		
+		<!-- Infosys OAuth Security Version -->
+		<v.infosys.oauth.security>1.17</v.infosys.oauth.security>
+		
+		<!-- Lombok version -->
+		<v.lombok>1.18.12</v.lombok>
+		
+		<!-- Spring Data JPA version -->
+		<v.spring.data.jpa>2.3.8.RELEASE</v.spring.data.jpa>
+		
+		<!-- Default encoding -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
+	<dependencies>
+		<!-- Infosys Common Dependency -->
+		<dependency>
+			<groupId>bg.infosys.common</groupId>
+			<artifactId>infosys-common</artifactId>
+			<version>${v.infosys.common}</version>
+		</dependency>
+		
+		<!-- Infosys OAuth Security Dependency -->
+		<dependency>
+			<groupId>bg.infosys.common</groupId>
+			<artifactId>infosys-oauth-security</artifactId>
+			<version>${v.infosys.oauth.security}</version>
+		</dependency>
+		
+		<!-- Lombok Dependency -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${v.lombok}</version>
+		</dependency>
+		
+		<!-- Spring Data JPA -->
+		<dependency>
+		    <groupId>org.springframework.data</groupId>
+		    <artifactId>spring-data-jpa</artifactId>
+		    <version>${v.spring.data.jpa}</version>
+		</dependency>
+		
+	</dependencies>
+
+</project>

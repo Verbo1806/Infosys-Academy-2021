@@ -1,0 +1,38 @@
+package bg.infosys.crc.admin.dto;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonInclude(Include.NON_NULL)
+@ApiModel(description = "Class representing a parameter visibility in the application")
+public class ParamVisibilityDTO {
+	@ApiModelProperty(notes = "Unique string identifier of the Parameter", example = "ping", required = true, position = 0)
+	@NotBlank(message = "'code' cannot be blank")
+	@Size(max = 64, message = "'code' length must be less than 65 characters")
+	@Setter private String code;
+	
+	@ApiModelProperty(notes = "State of the Parameter", example = "true", required = true, position = 1)
+	@NotNull(message = "'visible' cannot be null")
+	private Boolean visible;
+	
+	@ApiModelProperty(notes = "Order num of the Parameter", example = "3", required = true, position = 2)
+	@Positive(message = "'orderNum' must be a positive number")
+	private Integer orderNum;
+}

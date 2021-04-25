@@ -1,0 +1,56 @@
+package bg.infosys.crc.admin.service.mapper;
+
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import bg.infosys.crc.admin.dto.AuthorityDTO;
+import bg.infosys.crc.admin.dto.AuthorityPagingDTO;
+import bg.infosys.crc.admin.entity.security.Authority;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class AuthorityMapper implements IModelMapper<AuthorityDTO, Authority> {
+	private final PermissionMapper permissionMapper;
+
+	@Override
+	public AuthorityDTO toDto(Authority entity) {
+		return AuthorityDTO.builder()
+						  .id(entity.getId())
+						  .name(entity.getName())
+						  .description(entity.getDescription())
+						  .enabled(entity.getEnabled())
+						  .permissions(entity.getPermissions() != null ? entity.getPermissions().stream()
+								  							  									.map(p -> permissionMapper.toDto(p))
+								  							  									.collect(Collectors.toList()) : null)
+						  .build();
+	}
+
+
+	@Override
+	public Authority toEntity(AuthorityDTO dto) {
+		Authority auth = new Authority();
+		auth.setId(dto.getId());
+		auth.setName(dto.getName());
+		auth.setDescription(dto.getDescription());
+		auth.setEnabled(dto.getEnabled());
+		auth.setPermissions(dto.getPermissions().stream()
+				 								.map(p -> permissionMapper.toEntity(p))
+				 								.collect(Collectors.toList()));
+		return auth;
+	}
+	
+	public AuthorityPagingDTO toPagingDto(Authority entity) {
+		return AuthorityPagingDTO.builder()
+						  .id(entity.getId())
+						  .name(entity.getName())
+						  .description(entity.getDescription())
+						  .enabled(entity.getEnabled())
+						  .permissions(entity.getPermissions() != null ? entity.getPermissions().stream()
+								  							  									.map(p -> p.getName())
+								  							  									.collect(Collectors.toList()) : null)
+						  .build();
+	}
+
+}

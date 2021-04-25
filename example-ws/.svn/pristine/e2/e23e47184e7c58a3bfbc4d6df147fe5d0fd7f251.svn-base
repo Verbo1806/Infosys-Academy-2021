@@ -1,0 +1,114 @@
+package bg.infosys.crc.admin.service.security;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
+import bg.infosys.common.ws.security.components.AuthService;
+import bg.infosys.crc.admin.controller.error.APIErrorCodes;
+import bg.infosys.crc.admin.controller.exception.BadRequestException;
+import bg.infosys.crc.admin.dto.LitePage;
+import bg.infosys.crc.admin.dto.PagingSorting;
+import bg.infosys.crc.admin.dto.UserDTO;
+import bg.infosys.crc.admin.dto.UserPagingDTO;
+import bg.infosys.crc.admin.entity.security.Authority;
+import bg.infosys.crc.admin.entity.security.User;
+import bg.infosys.crc.admin.repository.security.UserRepository;
+import bg.infosys.crc.admin.service.mapper.UserMapper;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+	private final AuthService		authService;
+	private final UserRepository	userRepository;
+	private final AuthorityService  authorityService;
+	
+	private final UserMapper		userMapper;
+	//private final AuthorityDAO		authorityDAO;
+
+	public List<UserDTO> findAll() {
+		return userRepository.findAll().stream()
+										.map(p -> userMapper.toDto(p))
+										.collect(Collectors.toList());
+	}
+	
+	public Optional<UserDTO> findById(Integer entityId) {
+		return userRepository.findById(entityId).map(p -> userMapper.toDto(p));
+	}
+	
+	@Transactional
+	public UserDTO saveUser(UserDTO user) {
+		checkIfUsernameExists(user.getUsername(), null);
+		
+		User u = new User();
+		u.setUsername(user.getUsername());
+		u.setFullName(user.getFullName());
+		u.setEnabled(user.getEnabled());
+		
+		String encodedPass = authService.encodePassword(user.getPassword());
+		u.setPassword(encodedPass);
+		
+		if (user.getAuthority() != null) {
+			Optional<Authority> a = authorityService.findEntityById(user.getAuthority().getId());
+			if (a.isPresent()) {
+				u.setGrantedAuthorities(new ArrayList<Authority>());
+				u.getGrantedAuthorities().add(a.get());
+			}
+		}
+		
+		u = userRepository.save(u);
+		return userMapper.toDto(u);
+	}
+	
+	@Transactional
+	public UserDTO update(UserDTO entity, Integer entityId) {
+		if (entity.getEnabled() && userRepository.hasDisabledAuth(entityId)) {
+			throw new BadRequestException(APIErrorCodes.EXISTING_USER_WITH_AUTH);
+		}
+		User updatedEntity = userRepository.findById(entityId)
+											.orElseThrow(() -> new EntityNotFoundException("User does not exist!"));
+
+		entity.setId(entityId);
+		updatedEntity.setUsername(entity.getUsername());
+		updatedEntity.setFullName(entity.getFullName());
+		updatedEntity.setEnabled(entity.getEnabled());
+		updatedEntity.getGrantedAuthorities().clear();
+		if (entity.getAuthority() != null) {
+			Optional<Authority> a = authorityService.findEntityById(entity.getAuthority().getId());
+			if (a.isPresent()) {
+				updatedEntity.getGrantedAuthorities().clear();
+				updatedEntity.getGrantedAuthorities().add(a.get());
+			}
+		}
+		
+		updatedEntity = userRepository.save(updatedEntity);
+		return userMapper.toDto(updatedEntity);
+	}
+	
+	@Transactional
+	public LitePage<UserPagingDTO> findAllByFilter(String username, PagingSorting pagingSorting) {
+		List<User> results = userRepository.findAllByFilter(username, pagingSorting);
+		
+		return LitePage.<UserPagingDTO>builder()
+					   .content(results.stream()
+									     .map(p -> userMapper.toPagingDto(p))
+									     .collect(Collectors.toList()))
+					   .pageNumber(pagingSorting.getPageNumber())
+					   .pageSize(pagingSorting.getPageSize())
+					   .totalElements(userRepository.countAllByFilter(username))
+					   .build();
+	}
+	
+	private void checkIfUsernameExists(String username, Integer userId) {
+		if (userRepository.findByUsername(username, null) != null) {
+			throw new BadRequestException(APIErrorCodes.EXISTING_USERNAME);
+		}
+	}
+}
